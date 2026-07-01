@@ -1,0 +1,296 @@
+---
+import Layout from '@layouts/Layout.astro';
+
+const levels = [
+    {
+        id: 'fresher',
+        label: 'Fresher',
+        duration: '0 – 1 Year',
+        color: 'green',
+        icon: '🌱',
+        description: 'Learn the fundamentals of information security, threat landscapes, and build lab skills.',
+        certifications: ['CompTIA Security+', 'CompTIA Network+', 'EC-Council CEH (entry prep)', 'Google Cybersecurity Certificate'],
+        skills: [
+            { category: 'Security Fundamentals', items: ['CIA Triad (Confidentiality, Integrity, Availability)', 'Types of cyber threats & attack vectors', 'Authentication & Authorization concepts', 'Cryptography basics (symmetric, asymmetric, hashing)', 'PKI and digital certificates'] },
+            { category: 'Networking for Security', items: ['TCP/IP, UDP, DNS, HTTP/S, SMTP', 'Firewall concepts & rules', 'VPN types (SSL, IPsec)', 'Network segmentation & DMZ', 'Wireshark for traffic analysis'] },
+            { category: 'Operating System Security', items: ['Linux hardening & user management', 'Windows Active Directory basics', 'File permissions, sudo, SELinux/AppArmor', 'Log files & event monitoring', 'Patch management concepts'] },
+            { category: 'Ethical Hacking Basics', items: ['Penetration testing methodology', 'OWASP Top 10 web vulnerabilities', 'Kali Linux & basic tools (nmap, Metasploit basics)', 'Social engineering awareness', 'Bug bounty program basics'] },
+        ],
+        projects: [
+            'Set up a home lab with Kali Linux + Metasploitable 2 for ethical hacking practice',
+            'Capture and analyse network packets with Wireshark for common protocols',
+            'Harden a Linux server (disable unused ports, configure firewall with iptables/ufw)',
+            'Complete TryHackMe or HackTheBox beginner paths',
+        ],
+    },
+    {
+        id: 'intermediate',
+        label: 'Intermediate',
+        duration: '2 – 4 Years',
+        color: 'yellow',
+        icon: '🚀',
+        description: 'Develop hands-on offensive and defensive security skills with real-world tools and techniques.',
+        certifications: ['OSCP (Offensive Security Certified Professional)', 'CEH (Certified Ethical Hacker)', 'CompTIA CySA+ / PenTest+', 'Splunk Core Certified User/Power User'],
+        skills: [
+            { category: 'Penetration Testing', items: ['Reconnaissance (passive & active)', 'Vulnerability scanning (Nessus, OpenVAS)', 'Exploitation with Metasploit Framework', 'Web app pentesting (Burp Suite, SQLmap)', 'Post-exploitation & privilege escalation'] },
+            { category: 'SOC & Threat Detection', items: ['SIEM platforms (Splunk, IBM QRadar, Microsoft Sentinel)', 'Log analysis & correlation rules', 'Incident response lifecycle (NIST framework)', 'Threat intelligence feeds (MISP, VirusTotal)', 'MITRE ATT&CK framework mapping'] },
+            { category: 'Cloud Security', items: ['AWS Security Hub, GuardDuty, CloudTrail', 'Azure Defender & Sentinel', 'IAM policies & least privilege', 'Container security (Docker, Kubernetes security)', 'Cloud misconfiguration detection'] },
+            { category: 'Malware Analysis', items: ['Static analysis (strings, file headers, PE analysis)', 'Dynamic analysis (sandboxes — Any.run, Cuckoo)', 'Reverse engineering basics (Ghidra, x64dbg)', 'IOC (Indicator of Compromise) extraction', 'YARA rule writing'] },
+        ],
+        projects: [
+            'Complete a full pen test on a test environment and write a professional report',
+            'Build a SIEM lab using Splunk + simulated attack data from BOTS dataset',
+            'Create custom YARA rules to detect a malware family',
+            'Deploy and configure a honeypot (Cowrie) and analyse attacker behavior',
+        ],
+    },
+    {
+        id: 'expert',
+        label: 'Expert',
+        duration: '5+ Years',
+        color: 'purple',
+        icon: '👑',
+        description: 'Lead red/blue teams, design enterprise security architecture, and influence organizational security strategy.',
+        certifications: ['CISSP (Certified Information Systems Security Professional)', 'CISM (Certified Information Security Manager)', 'GREM / GXPN (GIAC advanced certs)', 'AWS Security Specialty / Azure Security Engineer'],
+        skills: [
+            { category: 'Red Team Operations', items: ['Advanced persistent threat (APT) simulation', 'Custom C2 framework development (Cobalt Strike, Havoc)', 'Phishing campaign design & awareness testing', 'Physical penetration testing concepts', 'Purple team exercises & ATT&CK emulation'] },
+            { category: 'Threat Intelligence & Hunting', items: ['CTI (Cyber Threat Intelligence) lifecycle', 'Threat hunting hypothesis development', 'Diamond Model of intrusion analysis', 'Dark web monitoring & OSINT techniques', 'Proactive threat hunting with ELK / Splunk'] },
+            { category: 'Security Architecture', items: ['Zero Trust Architecture design (ZTNA, BeyondCorp)', 'SASE (Secure Access Service Edge)', 'DevSecOps pipeline integration (SAST, DAST, SCA)', 'Security reference architectures (SABSA, TOGAF)', 'GRC — Risk assessment & compliance (ISO 27001, SOC 2, PCI-DSS)'] },
+            { category: 'Advanced Forensics & IR', items: ['Memory forensics (Volatility Framework)', 'Disk forensics & evidence preservation (EnCase, FTK)', 'Network forensics & timeline reconstruction', 'Breach investigation & post-mortem reporting', 'Ransomware analysis & recovery strategies'] },
+        ],
+        projects: [
+            'Lead a full red team engagement and present findings to executive stakeholders',
+            'Design an enterprise Zero Trust architecture for a 10,000-user organization',
+            'Build a custom threat intelligence platform integrating MISP + ELK + automated IOC feeds',
+            'Implement a complete DevSecOps pipeline with SAST, DAST, and container scanning',
+        ],
+    },
+];
+
+const jobRoles = [
+    { title: 'SOC Analyst (L1)', level: 'Fresher', indiaRange: '₹3 – 6 LPA', globalRange: '$45K – $70K', description: 'Monitor security alerts, triage incidents, and escalate to L2/L3 analysts.' },
+    { title: 'Security Analyst (L2)', level: 'Fresher–Intermediate', indiaRange: '₹5 – 12 LPA', globalRange: '$65K – $95K', description: 'Investigate threats, perform log analysis, and conduct initial incident response.' },
+    { title: 'Penetration Tester', level: 'Intermediate', indiaRange: '₹8 – 20 LPA', globalRange: '$90K – $130K', description: 'Ethically hack systems, networks, and applications to find vulnerabilities before attackers do.' },
+    { title: 'Cloud Security Engineer', level: 'Intermediate–Expert', indiaRange: '₹12 – 28 LPA', globalRange: '$110K – $155K', description: 'Secure cloud environments on AWS/Azure/GCP, implement IAM, and monitor for misconfigurations.' },
+    { title: 'Security Engineer', level: 'Intermediate–Expert', indiaRange: '₹14 – 30 LPA', globalRange: '$120K – $160K', description: 'Build and maintain security tooling, automate detection, and integrate security into DevOps.' },
+    { title: 'Red Team Lead', level: 'Expert', indiaRange: '₹25 – 45 LPA', globalRange: '$145K – $200K', description: 'Plan and lead adversary simulation exercises to test organizational defenses.' },
+    { title: 'Security Architect', level: 'Expert', indiaRange: '₹30 – 55 LPA', globalRange: '$160K – $220K', description: 'Design end-to-end security architectures, define standards, and align with business risk.' },
+    { title: 'CISO', level: 'Expert (Leadership)', indiaRange: '₹50 – 1Cr+ LPA', globalRange: '$200K – $400K+', description: 'Chief Information Security Officer — leads the entire security function of an organization.' },
+];
+
+const salaryTable = [
+    { level: 'Fresher (0–1 yr)', india: '₹3 – 8 LPA', usa: '$55K – $85K', uk: '£32K – £50K', canada: 'C$60K – C$80K', australia: 'AU$65K – AU$88K' },
+    { level: 'Intermediate (2–4 yr)', india: '₹8 – 22 LPA', usa: '$90K – $135K', uk: '£55K – £80K', canada: 'C$90K – C$120K', australia: 'AU$95K – AU$130K' },
+    { level: 'Senior (5–8 yr)', india: '₹20 – 40 LPA', usa: '$135K – $180K', uk: '£85K – £115K', canada: 'C$125K – C$160K', australia: 'AU$130K – AU$170K' },
+    { level: 'Expert / Architect (8+ yr)', india: '₹35 – 70 LPA', usa: '$170K – $260K', uk: '£110K – £160K', canada: 'C$160K – C$210K', australia: 'AU$170K – AU$230K' },
+];
+---
+
+<Layout title="Cybersecurity Engineer Roadmap & Salary Guide" description="Complete Cybersecurity Engineer career roadmap from Fresher to Expert — Security+, OSCP, CISSP certifications, job roles, and salary data for India and global markets.">
+
+    <!-- Hero -->
+    <section class="relative w-full px-4 py-20 sm:px-6 sm:py-28 bg-base-100">
+        <div class="relative mx-auto max-w-5xl text-center">
+            <a href="/roadmaps" class="inline-flex items-center gap-1.5 text-sm text-base-content/50 hover:text-primary transition-colors mb-6">
+                ← Back to All Roadmaps
+            </a>
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 rounded-3xl bg-red-500/10 flex items-center justify-center text-4xl">
+                    🔐
+                </div>
+            </div>
+            <h1 class="text-4xl font-black sm:text-6xl text-balance">Cybersecurity Engineer</h1>
+            <h2 class="text-xl font-semibold text-primary mt-2">Career Roadmap &amp; Salary Guide 2025</h2>
+            <p class="mt-5 text-lg max-w-2xl mx-auto text-base-content/70">
+                From Security+ to CISSP — a structured path through threat analysis, ethical hacking, SOC operations, cloud security, and enterprise security architecture.
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <span class="badge badge-lg bg-red-500/10 text-red-600 border-red-200">Ethical Hacking</span>
+                <span class="badge badge-lg bg-red-500/10 text-red-600 border-red-200">SOC Operations</span>
+                <span class="badge badge-lg bg-red-500/10 text-red-600 border-red-200">Cloud Security</span>
+                <span class="badge badge-lg bg-red-500/10 text-red-600 border-red-200">Threat Intelligence</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Level Tabs Navigation -->
+    <section class="w-full px-4 sm:px-6 sticky top-0 z-10 bg-base-100/90 backdrop-blur border-b border-base-200">
+        <div class="mx-auto max-w-7xl">
+            <div class="flex gap-0 overflow-x-auto">
+                {levels.map(level => (
+                    <a href={`#${level.id}`}
+                        class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
+                        <span>{level.icon}</span>
+                        <span>{level.label}</span>
+                        <span class="text-xs font-normal opacity-60">({level.duration})</span>
+                    </a>
+                ))}
+                <a href="#job-roles" class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
+                    💼 Job Roles
+                </a>
+                <a href="#salaries" class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
+                    💰 Salaries
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Levels -->
+    {levels.map((level) => (
+        <section id={level.id} class="w-full px-4 py-16 sm:px-6 sm:py-20 scroll-mt-16" class:list={[level.id === 'intermediate' ? 'bg-base-200/40' : 'bg-base-100']}>
+            <div class="mx-auto max-w-7xl">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
+                    <div class:list={[
+                        'w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0',
+                        level.color === 'green' ? 'bg-green-500/10' : level.color === 'yellow' ? 'bg-yellow-500/10' : 'bg-purple-500/10'
+                    ]}>
+                        {level.icon}
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <h2 class="text-2xl sm:text-3xl font-black">{level.label}</h2>
+                            <span class:list={[
+                                'badge badge-lg font-semibold',
+                                level.color === 'green' ? 'badge-success' : level.color === 'yellow' ? 'badge-warning' : 'badge-secondary'
+                            ]}>{level.duration}</span>
+                        </div>
+                        <p class="text-base-content/65 mt-1 max-w-2xl">{level.description}</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 p-5 rounded-2xl border border-base-200 bg-base-100">
+                    <h3 class="font-black text-lg mb-3 flex items-center gap-2">
+                        <span>🎓</span> Target Certifications
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {level.certifications.map(cert => (
+                            <span class:list={[
+                                'badge badge-lg font-semibold py-3 px-4',
+                                level.color === 'green' ? 'bg-green-500/10 text-green-700 border-green-200' :
+                                level.color === 'yellow' ? 'bg-yellow-500/10 text-yellow-700 border-yellow-200' :
+                                'bg-purple-500/10 text-purple-700 border-purple-200'
+                            ]}>{cert}</span>
+                        ))}
+                    </div>
+                </div>
+
+                <h3 class="font-black text-xl mb-5 flex items-center gap-2">
+                    <span>🛠️</span> Skills to Master
+                </h3>
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+                    {level.skills.map(skillGroup => (
+                        <div class="card bg-base-100 border border-base-200 p-5">
+                            <h4 class="font-black text-sm uppercase tracking-wide text-base-content/50 mb-3">{skillGroup.category}</h4>
+                            <ul class="space-y-2">
+                                {skillGroup.items.map(item => (
+                                    <li class="flex items-start gap-2 text-sm">
+                                        <span class:list={[
+                                            'mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0',
+                                            level.color === 'green' ? 'bg-green-500' : level.color === 'yellow' ? 'bg-yellow-500' : 'bg-purple-500'
+                                        ]}></span>
+                                        <span class="text-base-content/80">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+
+                <div class="p-6 rounded-2xl border border-dashed border-base-300 bg-base-100/50">
+                    <h3 class="font-black text-lg mb-4 flex items-center gap-2">
+                        <span>🧪</span> Hands-On Projects
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        {level.projects.map((project, i) => (
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-base-100 border border-base-200 text-sm">
+                                <span class:list={[
+                                    'w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 text-white',
+                                    level.color === 'green' ? 'bg-green-500' : level.color === 'yellow' ? 'bg-yellow-500' : 'bg-purple-500'
+                                ]}>{i + 1}</span>
+                                <span class="text-base-content/75">{project}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    ))}
+
+    <!-- Job Roles -->
+    <section id="job-roles" class="w-full px-4 py-16 sm:px-6 sm:py-20 bg-base-200/40 scroll-mt-16">
+        <div class="mx-auto max-w-7xl">
+            <h2 class="text-2xl font-black sm:text-4xl mb-3">💼 Job Roles in Cybersecurity</h2>
+            <p class="text-base-content/65 mb-10 max-w-2xl">
+                Cybersecurity offers diverse specializations — from offensive roles to governance and leadership.
+            </p>
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {jobRoles.map(role => (
+                    <div class="card bg-base-100 border border-base-200 p-6">
+                        <div class="flex items-start justify-between gap-2 mb-3">
+                            <h3 class="font-black text-base">{role.title}</h3>
+                            <span class="badge badge-sm bg-red-500/10 text-red-600 border-red-200 whitespace-nowrap">{role.level}</span>
+                        </div>
+                        <p class="text-sm text-base-content/65 mb-4">{role.description}</p>
+                        <div class="pt-3 border-t border-base-200 space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-base-content/50">India</span>
+                                <span class="font-bold">{role.indiaRange}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-base-content/50">Global (USD)</span>
+                                <span class="font-bold">{role.globalRange}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Salary Table -->
+    <section id="salaries" class="w-full px-4 py-16 sm:px-6 sm:py-20 scroll-mt-16">
+        <div class="mx-auto max-w-7xl">
+            <h2 class="text-2xl font-black sm:text-4xl mb-3">💰 Salary Comparison — India vs Global</h2>
+            <p class="text-base-content/65 mb-10 max-w-2xl">
+                Cybersecurity salaries are among the highest in tech, driven by a global talent shortage of 3.5M+ professionals.
+            </p>
+            <div class="overflow-x-auto rounded-2xl border border-base-200">
+                <table class="table table-lg w-full">
+                    <thead class="bg-base-200/60">
+                        <tr>
+                            <th class="font-black">Experience Level</th>
+                            <th class="font-black">India</th>
+                            <th class="font-black">USA</th>
+                            <th class="font-black">UK</th>
+                            <th class="font-black">Canada</th>
+                            <th class="font-black">Australia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {salaryTable.map((row, i) => (
+                            <tr class:list={[i % 2 === 0 ? '' : 'bg-base-200/20']}>
+                                <td class="font-semibold">{row.level}</td>
+                                <td class="font-bold text-primary">{row.india}</td>
+                                <td>{row.usa}</td>
+                                <td>{row.uk}</td>
+                                <td>{row.canada}</td>
+                                <td>{row.australia}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-base-content/40 mt-4">* Salary ranges are indicative, sourced from Glassdoor, LinkedIn Salary, ISC² Cybersecurity Workforce Study, Naukri.com, and PayScale (2024–2025).</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="w-full px-4 py-16 sm:px-6 bg-base-200/40">
+        <div class="mx-auto max-w-3xl text-center">
+            <h2 class="text-2xl font-black sm:text-3xl mb-4">Ready to Defend the Digital World?</h2>
+            <p class="text-base-content/65 mb-8">Explore all career roadmaps and find the path that fits you best.</p>
+            <a href="/roadmaps" class="btn btn-primary btn-lg">← View All Roadmaps</a>
+        </div>
+    </section>
+
+</Layout>
