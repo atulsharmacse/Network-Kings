@@ -30,5 +30,10 @@
         "@stackbit/types": "^2.0.0",
         "configstore": "7.0.0",
         "daisyui": "^4.12.22"
+    },
+    "overrides": {
+        "form-data": "^4.0.4",
+        "ws": "^8.18.3",
+        "yaml": "^2.8.3"
     }
 }
