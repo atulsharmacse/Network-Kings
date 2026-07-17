@@ -7,6 +7,9 @@
         "build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
         "create-project": "node ./sanity-export/create-project.js",
         "import": "node ./sanity-export/import.js",
         "export": "node ./sanity-export/export.js"
@@ -28,7 +31,9 @@
         "@sanity/import": "^3.37.4",
         "@stackbit/cms-sanity": "^0.2.86",
         "@stackbit/types": "^2.0.0",
+        "@vitest/coverage-v8": "^2.1.9",
         "configstore": "7.0.0",
-        "daisyui": "^4.12.22"
+        "daisyui": "^4.12.22",
+        "vitest": "^2.1.9"
     }
 }
