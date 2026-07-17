@@ -28,5 +28,6 @@ sanityImport(input, {
         // Note: There might be warnings! Check `warnings`
     })
     .catch((err) => {
-        console.error('Import failed: %s', err.message);
+        console.error('Import failed:', err);
+        process.exitCode = 1;
     });
