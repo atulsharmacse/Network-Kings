@@ -1,7 +1,8 @@
 ---
-import Layout from '@layouts/Layout.astro';
+import RoadmapPage from '@components/RoadmapPage.astro';
+import type { RoadmapLevel, RoadmapJobRole, RoadmapSalaryRow } from '@components/RoadmapPage.astro';
 
-const levels = [
+const levels: RoadmapLevel[] = [
     {
         id: 'fresher',
         label: 'Fresher',
@@ -67,7 +68,7 @@ const levels = [
     },
 ];
 
-const jobRoles = [
+const jobRoles: RoadmapJobRole[] = [
     { title: 'Build & Release Engineer', level: 'Fresher', indiaRange: '₹3.5 – 7 LPA', globalRange: '$55K – $80K', description: 'Manage build systems, version control, and release pipelines for software teams.' },
     { title: 'Junior DevOps Engineer', level: 'Fresher–Intermediate', indiaRange: '₹5 – 10 LPA', globalRange: '$70K – $100K', description: 'Support CI/CD pipelines, container deployments, and cloud infrastructure provisioning.' },
     { title: 'DevOps Engineer', level: 'Intermediate', indiaRange: '₹10 – 22 LPA', globalRange: '$100K – $145K', description: 'Own end-to-end automation from code commit to production deployment across cloud environments.' },
@@ -78,7 +79,7 @@ const jobRoles = [
     { title: 'VP of Engineering / Engineering Manager', level: 'Expert (Leadership)', indiaRange: '₹40 – 90 LPA', globalRange: '$190K – $320K', description: 'Lead DevOps/Platform engineering teams, define culture, and drive organizational transformation.' },
 ];
 
-const salaryTable = [
+const salaryTable: RoadmapSalaryRow[] = [
     { level: 'Fresher (0–1 yr)', india: '₹4 – 8 LPA', usa: '$70K – $95K', uk: '£40K – £58K', canada: 'C$70K – C$92K', australia: 'AU$75K – AU$98K' },
     { level: 'Intermediate (2–4 yr)', india: '₹10 – 22 LPA', usa: '$105K – $150K', uk: '£65K – £90K', canada: 'C$100K – C$140K', australia: 'AU$105K – AU$145K' },
     { level: 'Senior (5–8 yr)', india: '₹20 – 40 LPA', usa: '$150K – $200K', uk: '£90K – £130K', canada: 'C$140K – C$180K', australia: 'AU$145K – AU$190K' },
@@ -86,211 +87,20 @@ const salaryTable = [
 ];
 ---
 
-<Layout title="DevOps Engineer Roadmap & Salary Guide" description="Complete DevOps Engineer career roadmap from Fresher to Expert — CI/CD, Kubernetes, Terraform, GitOps, Platform Engineering, and salary data for India and global markets.">
-
-    <!-- Hero -->
-    <section class="relative w-full px-4 py-20 sm:px-6 sm:py-28 bg-base-100">
-        <div class="relative mx-auto max-w-5xl text-center">
-            <a href="/roadmaps" class="inline-flex items-center gap-1.5 text-sm text-base-content/50 hover:text-primary transition-colors mb-6">
-                ← Back to All Roadmaps
-            </a>
-            <div class="flex justify-center mb-6">
-                <div class="w-20 h-20 rounded-3xl bg-green-500/10 flex items-center justify-center text-4xl">
-                    ⚙️
-                </div>
-            </div>
-            <h1 class="text-4xl font-black sm:text-6xl text-balance">DevOps Engineer</h1>
-            <h2 class="text-xl font-semibold text-primary mt-2">Career Roadmap &amp; Salary Guide 2025</h2>
-            <p class="mt-5 text-lg max-w-2xl mx-auto text-base-content/70">
-                From Git and Docker to GitOps and Platform Engineering — a complete path through CI/CD automation, Kubernetes, IaC, observability, and DevSecOps.
-            </p>
-            <div class="mt-8 flex flex-wrap justify-center gap-3">
-                <span class="badge badge-lg bg-green-500/10 text-green-600 border-green-200">CI/CD Pipelines</span>
-                <span class="badge badge-lg bg-green-500/10 text-green-600 border-green-200">Kubernetes & Helm</span>
-                <span class="badge badge-lg bg-green-500/10 text-green-600 border-green-200">Terraform & Ansible</span>
-                <span class="badge badge-lg bg-green-500/10 text-green-600 border-green-200">GitOps & SRE</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Level Tabs Navigation -->
-    <section class="w-full px-4 sm:px-6 sticky top-0 z-10 bg-base-100/90 backdrop-blur border-b border-base-200">
-        <div class="mx-auto max-w-7xl">
-            <div class="flex gap-0 overflow-x-auto">
-                {levels.map(level => (
-                    <a href={`#${level.id}`}
-                        class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
-                        <span>{level.icon}</span>
-                        <span>{level.label}</span>
-                        <span class="text-xs font-normal opacity-60">({level.duration})</span>
-                    </a>
-                ))}
-                <a href="#job-roles" class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
-                    💼 Job Roles
-                </a>
-                <a href="#salaries" class="flex items-center gap-2 px-5 py-4 text-sm font-bold border-b-2 border-transparent hover:border-primary hover:text-primary transition-colors whitespace-nowrap text-base-content/60">
-                    💰 Salaries
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap Levels -->
-    {levels.map((level) => (
-        <section id={level.id} class="w-full px-4 py-16 sm:px-6 sm:py-20 scroll-mt-16" class:list={[level.id === 'intermediate' ? 'bg-base-200/40' : 'bg-base-100']}>
-            <div class="mx-auto max-w-7xl">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
-                    <div class:list={[
-                        'w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0',
-                        level.color === 'green' ? 'bg-green-500/10' : level.color === 'yellow' ? 'bg-yellow-500/10' : 'bg-purple-500/10'
-                    ]}>
-                        {level.icon}
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-3 flex-wrap">
-                            <h2 class="text-2xl sm:text-3xl font-black">{level.label}</h2>
-                            <span class:list={[
-                                'badge badge-lg font-semibold',
-                                level.color === 'green' ? 'badge-success' : level.color === 'yellow' ? 'badge-warning' : 'badge-secondary'
-                            ]}>{level.duration}</span>
-                        </div>
-                        <p class="text-base-content/65 mt-1 max-w-2xl">{level.description}</p>
-                    </div>
-                </div>
-
-                <div class="mb-8 p-5 rounded-2xl border border-base-200 bg-base-100">
-                    <h3 class="font-black text-lg mb-3 flex items-center gap-2">
-                        <span>🎓</span> Target Certifications
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        {level.certifications.map(cert => (
-                            <span class:list={[
-                                'badge badge-lg font-semibold py-3 px-4',
-                                level.color === 'green' ? 'bg-green-500/10 text-green-700 border-green-200' :
-                                level.color === 'yellow' ? 'bg-yellow-500/10 text-yellow-700 border-yellow-200' :
-                                'bg-purple-500/10 text-purple-700 border-purple-200'
-                            ]}>{cert}</span>
-                        ))}
-                    </div>
-                </div>
-
-                <h3 class="font-black text-xl mb-5 flex items-center gap-2">
-                    <span>🛠️</span> Skills to Master
-                </h3>
-                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-10">
-                    {level.skills.map(skillGroup => (
-                        <div class="card bg-base-100 border border-base-200 p-5">
-                            <h4 class="font-black text-sm uppercase tracking-wide text-base-content/50 mb-3">{skillGroup.category}</h4>
-                            <ul class="space-y-2">
-                                {skillGroup.items.map(item => (
-                                    <li class="flex items-start gap-2 text-sm">
-                                        <span class:list={[
-                                            'mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0',
-                                            level.color === 'green' ? 'bg-green-500' : level.color === 'yellow' ? 'bg-yellow-500' : 'bg-purple-500'
-                                        ]}></span>
-                                        <span class="text-base-content/80">{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-
-                <div class="p-6 rounded-2xl border border-dashed border-base-300 bg-base-100/50">
-                    <h3 class="font-black text-lg mb-4 flex items-center gap-2">
-                        <span>🧪</span> Hands-On Projects
-                    </h3>
-                    <div class="grid sm:grid-cols-2 gap-3">
-                        {level.projects.map((project, i) => (
-                            <div class="flex items-start gap-3 p-3 rounded-xl bg-base-100 border border-base-200 text-sm">
-                                <span class:list={[
-                                    'w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 text-white',
-                                    level.color === 'green' ? 'bg-green-500' : level.color === 'yellow' ? 'bg-yellow-500' : 'bg-purple-500'
-                                ]}>{i + 1}</span>
-                                <span class="text-base-content/75">{project}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-    ))}
-
-    <!-- Job Roles -->
-    <section id="job-roles" class="w-full px-4 py-16 sm:px-6 sm:py-20 bg-base-200/40 scroll-mt-16">
-        <div class="mx-auto max-w-7xl">
-            <h2 class="text-2xl font-black sm:text-4xl mb-3">💼 Job Roles in DevOps</h2>
-            <p class="text-base-content/65 mb-10 max-w-2xl">
-                DevOps roles have evolved from generalist positions into specialized disciplines — SRE, Platform Engineering, and DevSecOps are now distinct career tracks.
-            </p>
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {jobRoles.map(role => (
-                    <div class="card bg-base-100 border border-base-200 p-6">
-                        <div class="flex items-start justify-between gap-2 mb-3">
-                            <h3 class="font-black text-base">{role.title}</h3>
-                            <span class="badge badge-sm bg-green-500/10 text-green-600 border-green-200 whitespace-nowrap">{role.level}</span>
-                        </div>
-                        <p class="text-sm text-base-content/65 mb-4">{role.description}</p>
-                        <div class="pt-3 border-t border-base-200 space-y-1">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-base-content/50">India</span>
-                                <span class="font-bold">{role.indiaRange}</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-base-content/50">Global (USD)</span>
-                                <span class="font-bold">{role.globalRange}</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    </section>
-
-    <!-- Salary Table -->
-    <section id="salaries" class="w-full px-4 py-16 sm:px-6 sm:py-20 scroll-mt-16">
-        <div class="mx-auto max-w-7xl">
-            <h2 class="text-2xl font-black sm:text-4xl mb-3">💰 Salary Comparison — India vs Global</h2>
-            <p class="text-base-content/65 mb-10 max-w-2xl">
-                DevOps salaries have grown rapidly — demand for automation skills outpaces supply in virtually every market.
-            </p>
-            <div class="overflow-x-auto rounded-2xl border border-base-200">
-                <table class="table table-lg w-full">
-                    <thead class="bg-base-200/60">
-                        <tr>
-                            <th class="font-black">Experience Level</th>
-                            <th class="font-black">India</th>
-                            <th class="font-black">USA</th>
-                            <th class="font-black">UK</th>
-                            <th class="font-black">Canada</th>
-                            <th class="font-black">Australia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {salaryTable.map((row, i) => (
-                            <tr class:list={[i % 2 === 0 ? '' : 'bg-base-200/20']}>
-                                <td class="font-semibold">{row.level}</td>
-                                <td class="font-bold text-primary">{row.india}</td>
-                                <td>{row.usa}</td>
-                                <td>{row.uk}</td>
-                                <td>{row.canada}</td>
-                                <td>{row.australia}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            <p class="text-xs text-base-content/40 mt-4">* Salary ranges are indicative, sourced from Glassdoor, LinkedIn Salary, Levels.fyi, Stack Overflow Developer Survey, and Naukri.com (2024–2025).</p>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="w-full px-4 py-16 sm:px-6 bg-base-200/40">
-        <div class="mx-auto max-w-3xl text-center">
-            <h2 class="text-2xl font-black sm:text-3xl mb-4">Ready to Automate the World?</h2>
-            <p class="text-base-content/65 mb-8">Explore all career roadmaps and find the path that fits you best.</p>
-            <a href="/roadmaps" class="btn btn-primary btn-lg">← View All Roadmaps</a>
-        </div>
-    </section>
-
-</Layout>
+<RoadmapPage
+    metaTitle={"DevOps Engineer Roadmap & Salary Guide"}
+    metaDescription={"Complete DevOps Engineer career roadmap from Fresher to Expert — CI/CD, Kubernetes, Terraform, GitOps, Platform Engineering, and salary data for India and global markets."}
+    accent="green"
+    heroIcon={"⚙️"}
+    heroTitle={"DevOps Engineer"}
+    heroSubtitle={"From Git and Docker to GitOps and Platform Engineering — a complete path through CI/CD automation, Kubernetes, IaC, observability, and DevSecOps."}
+    heroBadges={["CI/CD Pipelines", "Kubernetes & Helm", "Terraform & Ansible", "GitOps & SRE"]}
+    jobRolesTitle={"💼 Job Roles in DevOps"}
+    jobRolesIntro={"DevOps roles have evolved from generalist positions into specialized disciplines — SRE, Platform Engineering, and DevSecOps are now distinct career tracks."}
+    salaryIntro={"DevOps salaries have grown rapidly — demand for automation skills outpaces supply in virtually every market."}
+    salaryFootnote={"* Salary ranges are indicative, sourced from Glassdoor, LinkedIn Salary, Levels.fyi, Stack Overflow Developer Survey, and Naukri.com (2024–2025)."}
+    ctaTitle={"Ready to Automate the World?"}
+    levels={levels}
+    jobRoles={jobRoles}
+    salaryTable={salaryTable}
+/>
