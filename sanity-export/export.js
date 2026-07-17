@@ -41,6 +41,11 @@ const options = {
 };
 
 console.log('Start Sanity export');
-exportDataset(options).then(() => {
-    console.log('Start export finished');
-});
+exportDataset(options)
+    .then(() => {
+        console.log('Start export finished');
+    })
+    .catch((err) => {
+        console.error('Sanity export failed:', err);
+        process.exitCode = 1;
+    });

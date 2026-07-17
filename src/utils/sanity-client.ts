@@ -29,14 +29,23 @@ export const client = createClient(sanityConfig);
  * Creating Sanity listener to subscribe to whenever a new document is created or deleted to refresh the list in Create
  */
 [{ client: client, types: ['page'] }].forEach(({ client, types }: { client: SanityClient; types: Array<String> }) =>
-    client.listen(`*[_type in ${JSON.stringify(types)}]`, {}, { visibility: 'query' }).subscribe(async (event: any) => {
-        // only refresh when pages are deleted or created
-        if (event.transition === 'appear' || event.transition === 'disappear') {
-            const filePath = path.join(__dirname, '../layouts/Layout.astro');
-            const time = new Date();
-            
-            // update the updatedat stamp for the layout file, triggering astro to refresh the data in getStaticPaths
-            await fs.promises.utimes(filePath, time, time);
+    client.listen(`*[_type in ${JSON.stringify(types)}]`, {}, { visibility: 'query' }).subscribe({
+        next: async (event: any) => {
+            // only refresh when pages are deleted or created
+            if (event.transition === 'appear' || event.transition === 'disappear') {
+                const filePath = path.join(__dirname, '../layouts/Layout.astro');
+                const time = new Date();
+
+                try {
+                    // update the updatedat stamp for the layout file, triggering astro to refresh the data in getStaticPaths
+                    await fs.promises.utimes(filePath, time, time);
+                } catch (err) {
+                    console.error(`Failed to touch ${filePath} to refresh Astro data:`, err);
+                }
+            }
+        },
+        error: (err: unknown) => {
+            console.error('Sanity listener error:', err);
         }
     })
 );

@@ -69,4 +69,5 @@ createProject({
     token
 }).catch((error) => {
     console.error('failed to create new project', error);
+    process.exitCode = 1;
 });
